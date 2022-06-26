@@ -15,10 +15,8 @@ import {
 
 const Sidebar = () => {
   return (
-    <div
-      className="hidden sm:flex flex-col items-center xl:items-start xl:w-[340px] px-2 fixed h-full xl:pl-24 overflow-y-auto pb-4
-    "
-    >
+    // Note to myself. Position stikcy only work with fixed height of parents
+    <div className="hidden sm:flex flex-col items-center xl:items-start xl:w-[300px] px-2 sticky top-0 py-4 xl:pr-10  overflow-auto">
       <div className="grid place-items-center w-14 h-14 hoverAnimation   ">
         <Image src="https://rb.gy/ogau5a" width={28} height={28} />
       </div>
@@ -33,7 +31,7 @@ const Sidebar = () => {
         <SidebarLink text="Profile" Icon={UserIcon} />
         <SidebarLink text="More" Icon={DotsCircleHorizontalIcon} />
       </div>
-      <button className="xl:grid place-items-center hidden bg-[#1d9bf0] rounded-full py-3 w-full text-lg mt-4 font-bold hover:bg-[#1d9bf0]/80 shadow-md transition duration-200">
+      <button className="xl:grid place-items-center hidden bg-[#1d9bf0] rounded-full py-3 w-full text-lg mt-4 font-bold hover:bg-[#1d9bf0]/80 shadow-md transition duration-200 mb-4">
         Tweet
       </button>
 

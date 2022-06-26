@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import Sidebar from "./../components/Sidebar";
+import Feeds from "./../components/Feeds";
 
 export default function Home() {
   return (
@@ -10,9 +11,10 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="min-h-screen max-w-7xl mx-auto">
+      {/* Need to implement h-scren and overflow-auto to make the sidebar sticky and scrollable */}
+      <main className="max-w-7xl mx-auto flex  h-screen overflow-auto">
         <Sidebar />
-        {/* Feeds */}
+        <Feeds />
         {/* Widgets */}
 
         {/* Modal */}
