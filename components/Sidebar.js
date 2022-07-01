@@ -40,12 +40,12 @@ const Sidebar = () => {
       <div
         className="flex items-center justify-center mt-auto hoverAnimation w-full"
         onClick={signOut}
-        ick
       >
         <img
           src={session.user.image}
           alt=""
           className="h-9 w-9 rounded-full object-cover xl:mr-3"
+          referrerPolicy="no-referrer"
         />
         <div className="hidden xl:inline leading-5">
           <h4 className="font-bold">{session.user.name}</h4>

@@ -15,12 +15,14 @@ import {
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import React, { useRef, useState } from "react";
 import { db, storage } from "../firebase";
+import { useSession } from "next-auth/react";
 
 const Input = () => {
   const [input, setInput] = useState("");
   const [selectedFile, setSelectedFile] = useState(false);
   const filePickerRef = useRef(null);
   const [loading, setLoading] = useState(false);
+  const { data: session } = useSession();
 
   const addImageToPost = (e) => {
     const reader = new FileReader();
@@ -38,15 +40,13 @@ const Input = () => {
     setLoading(true);
 
     const docRef = await addDoc(collection(db, "posts"), {
-      //   id: session.user.uid,
-      //   username: session.user.name,
-      //   userImg: session.user.image,
-      //   tag: session.user.tag,
+      id: session.user.uid,
+      username: session.user.name,
+      userImg: session.user.image,
+      tag: session.user.tag,
       text: input,
       timestamp: serverTimestamp(),
     });
-
-    console.log(docRef);
 
     const imageRef = ref(storage, `posts/${docRef.id}/image`);
 
@@ -71,8 +71,9 @@ const Input = () => {
       }`}
     >
       <img
-        src="https://cdn.dribbble.com/users/1577045/screenshots/4914645/media/028d394ffb00cb7a4b2ef9915a384fd9.png?compress=1&resize=400x300&vertical=top"
+        src={session.user.image}
         alt=""
+        referrerPolicy="no-referrer"
         className="h-11 w-11 rounded-full object-cover cursor-pointer"
       />
 
