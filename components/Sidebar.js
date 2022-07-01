@@ -16,7 +16,7 @@ import {
 const Sidebar = () => {
   return (
     // Note to myself. Position stikcy only work with fixed height of parents
-    <div className="hidden sm:flex flex-col items-center xl:items-start xl:w-[300px] px-2 sticky top-0 py-4 xl:pr-10  overflow-auto">
+    <div className="hidden sm:flex flex-col items-center xl:items-start xl:w-[300px] px-2 fixed top-0 py-4 xl:pr-10 overflow-auto h-full ">
       <div className="grid place-items-center w-14 h-14 hoverAnimation   ">
         <Image src="https://rb.gy/ogau5a" width={28} height={28} />
       </div>
