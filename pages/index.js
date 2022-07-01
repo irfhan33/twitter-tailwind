@@ -10,7 +10,6 @@ export default function Home({ trendingResults, followResults, providers }) {
 
   if (!session) return <Login providers={providers} />;
 
-  console.log(session);
   return (
     <div>
       <Head>

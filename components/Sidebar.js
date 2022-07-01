@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import SidebarLink from "./SidebarLink";
+import { signOut, useSession } from "next-auth/react";
 import {
   BellIcon,
   BookmarkIcon,
@@ -14,6 +15,7 @@ import {
 } from "@heroicons/react/outline";
 
 const Sidebar = () => {
+  const { data: session } = useSession();
   return (
     // Note to myself. Position stikcy only work with fixed height of parents
     <div className="hidden sm:flex flex-col items-center xl:items-start xl:w-[300px] px-2 fixed top-0 py-4 xl:pr-10 overflow-auto h-full ">
@@ -35,15 +37,19 @@ const Sidebar = () => {
         Tweet
       </button>
 
-      <div className="flex items-center justify-center mt-auto hoverAnimation w-full">
+      <div
+        className="flex items-center justify-center mt-auto hoverAnimation w-full"
+        onClick={signOut}
+        ick
+      >
         <img
-          src="https://cdn.dribbble.com/users/1577045/screenshots/4914645/media/028d394ffb00cb7a4b2ef9915a384fd9.png?compress=1&resize=400x300&vertical=top"
+          src={session.user.image}
           alt=""
           className="h-9 w-9 rounded-full object-cover xl:mr-3"
         />
         <div className="hidden xl:inline leading-5">
-          <h4 className="font-bold">firebase 1875</h4>
-          <p className="text-[#6e767d]">@firebase1865</p>
+          <h4 className="font-bold">{session.user.name}</h4>
+          <p className="text-[#6e767d]">{session.user.tag}</p>
         </div>
         <DotsHorizontalIcon className="h-5 hidden xl:inline ml-auto" />
       </div>
