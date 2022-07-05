@@ -23,15 +23,71 @@ import {
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-// import Moment from "react-moment";
-// import { useRecoilState } from "recoil";
-// import { modalState, postIdState } from "../atoms/modalAtom";
+import Moment from "react-moment";
+import { useRecoilState } from "recoil";
+import { modalState, postIdState } from "../atoms/modalAtom";
 import { db } from "../firebase";
 
 const Post = ({ id, post, postPage }) => {
   const { data: session } = useSession();
+  const [isOpen, setIsOpen] = useRecoilState(modalState);
+  const [comments, setComments] = useState([]);
+  const [postId, setPostId] = useRecoilState(postIdState);
+  const router = useRouter();
+  const [liked, setLiked] = useState(false);
+  const [likes, setLikes] = useState([]);
+
+  // useEffect(() => {
+  //   onSnapshot(
+  //     query(
+  //       collection(db, "posts", id, "comments"),
+  //       orderBy("timestamp", "desc")
+  //     ),
+  //     (snapshot) => {
+  //       setComments(snapshot.docs);
+  //     }
+  //   );
+  // }, [db, id]);
+
+  useEffect(
+    () =>
+      onSnapshot(collection(db, "posts", id, "comments"), (snapshot) =>
+        setComments(snapshot.docs)
+      ),
+    [db, id]
+  );
+
+  useEffect(
+    () =>
+      onSnapshot(collection(db, "posts", id, "likes"), (snapshot) =>
+        setLikes(snapshot.docs)
+      ),
+    [db, id]
+  );
+
+  useEffect(
+    () =>
+      setLiked(
+        likes.findIndex((like) => like.id === session?.user?.uid) !== -1
+      ),
+    [likes]
+  );
+
+  const likePost = async () => {
+    if (liked) {
+      await deleteDoc(doc(db, "posts", id, "likes", session.user.uid));
+    } else {
+      await setDoc(doc(db, "posts", id, "likes", session.user.uid), {
+        username: session.user.name,
+      });
+    }
+  };
+
   return (
-    <div className="cursor-pointer px-4 py-2 border-b border-gray-700 flex">
+    <div
+      className="cursor-pointer px-4 py-2 border-b border-gray-700 flex"
+      onClick={() => router.push(`/${id}`)}
+    >
       {!postPage && (
         <img
           src={post?.userImg}
@@ -65,7 +121,7 @@ const Post = ({ id, post, postPage }) => {
             </div>{" "}
             ·{" "}
             <span className="hover:underline text-sm sm:text-[15px]">
-              {/* <Moment fromNow>{post?.timestamp?.toDate()}</Moment> */}
+              <Moment fromNow>{post?.timestamp?.toDate()}</Moment>
             </span>
             {!postPage && (
               <p className="text-[#d9d9d9] text-[15px] sm:text-base mt-1">
@@ -94,7 +150,7 @@ const Post = ({ id, post, postPage }) => {
             postPage && "mx-auto"
           }`}
         >
-          {/* <div
+          <div
             className="flex items-center space-x-1 group"
             onClick={(e) => {
               e.stopPropagation();
@@ -110,7 +166,7 @@ const Post = ({ id, post, postPage }) => {
                 {comments.length}
               </span>
             )}
-          </div> */}
+          </div>
 
           {session.user.uid === post?.id ? (
             <div
@@ -133,7 +189,7 @@ const Post = ({ id, post, postPage }) => {
             </div>
           )}
 
-          {/* <div
+          <div
             className="flex items-center space-x-1 group"
             onClick={(e) => {
               e.stopPropagation();
@@ -156,7 +212,7 @@ const Post = ({ id, post, postPage }) => {
                 {likes.length}
               </span>
             )}
-          </div> */}
+          </div>
 
           <div className="icon group">
             <ShareIcon className="h-5 group-hover:text-[#1d9bf0]" />

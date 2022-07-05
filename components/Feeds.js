@@ -32,7 +32,7 @@ const Feeds = () => {
   }, [db]);
 
   return (
-    <div className="grow max-w-2xl border-r border-l border-gray-700 h-[200vh] xl:ml-[300px] sm:ml-[78px]">
+    <div className="grow max-w-2xl border-r border-l border-gray-700 xl:ml-[300px] sm:ml-[78px]">
       <div className="flex justify-between items-center px-4 py-1  backdrop-blur-xl sticky top-0">
         <h2 className="text-lg font-bold">Home</h2>
         <div className="hoverAnimation">
@@ -50,3 +50,19 @@ const Feeds = () => {
 };
 
 export default Feeds;
+
+export const getServerSideProps = () => {
+  const [posts, setPosts] = useState([]);
+
+  onSnapshot(
+    query(collection(db, "posts"), orderBy("timestamp", "desc")),
+    (snapshot) => {
+      setPosts(snapshot.docs);
+    }
+  );
+  return {
+    props: {
+      posts,
+    },
+  };
+};
